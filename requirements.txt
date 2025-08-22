@@ -1,0 +1,25 @@
+# Core Python Libraries
+numpy
+pandas
+matplotlib
+seaborn
+
+# Machine Learning
+scikit-learn
+xgboost
+lightgbm
+
+# Time Series & Stats
+statsmodels
+
+# API Deployment
+fastapi
+uvicorn
+
+# Utilities
+joblib
+python-dotenv
+
+# Optional (but very useful)
+jupyter
+notebook
