@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np 
 
-def load_data():
+def load_data(path="data/raw/electricity.csv"):
     df = pd.read_csv(
-    "electricity.csv",
+    path,
     low_memory=False
     )
     df["datetime"] = pd.to_datetime(
@@ -20,7 +20,7 @@ def load_data():
 def interpolate():
     df = load_data()
     numeric_cols = df.select_dtypes(include=np.number).columns
-    df[numeric_cols] = df_interp[numeric_cols].interpolate(
+    df[numeric_cols] = df[numeric_cols].interpolate(
     method="time",
     limit_direction="both"
     )   

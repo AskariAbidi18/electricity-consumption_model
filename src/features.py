@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def create_lag_features():
+def create_lag_features(df):
     df['lag1h'] = df['Global_active_power'].shift(60)
     df['lag2h'] = df['Global_active_power'].shift(120)
     df['lag3h'] = df['Global_active_power'].shift(180)
@@ -10,7 +10,7 @@ def create_lag_features():
 
     return df 
 
-def create_rolling_features():
+def create_rolling_features(df):
     df['rolling_mean_1h'] = df['Global_active_power'].rolling(window=60).mean()
     df['rolling_mean_24h'] = df['Global_active_power'].rolling(window=1440).mean()
     df['rolling_mean_7d'] = df['Global_active_power'].rolling(window=10080).mean()
@@ -26,7 +26,7 @@ def create_rolling_features():
 
     return df  
 
-def test_train_split():
+def test_train_split(df):
     X = df.drop('Global_active_power', axis=1)
     y = df['Global_active_power']
 
@@ -39,6 +39,4 @@ def test_train_split():
     X_test  = X.iloc[split_idx:]
     y_test  = y.iloc[split_idx:]
 
-    split = [X_train,y_train,X_test,y_test]
-
-    return split
+    return X_train, y_train, X_test, y_test

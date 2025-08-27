@@ -2,7 +2,7 @@ import xgboost as xgb
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import numpy as np
 
-def xgBoost():
+def xgBoost(X_train, y_train, X_test, y_test):
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dtest  = xgb.DMatrix(X_test, label=y_test)
 
