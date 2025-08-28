@@ -24,4 +24,4 @@ data/processed/*
 Thumbs.db
 
 #models
-models
+models/
