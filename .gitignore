@@ -13,6 +13,8 @@ __pycache__/
 # Data
 data/raw/*
 !data/raw/sample.csv   
+data/processed/*
+!data/processed/sample.csv  
 
 # Jupyter
 .ipynb_checkpoints/
