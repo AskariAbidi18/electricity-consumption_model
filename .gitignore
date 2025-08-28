@@ -22,3 +22,6 @@ data/processed/*
 # OS junk
 .DS_Store
 Thumbs.db
+
+#models
+models
