@@ -47,7 +47,7 @@ def main():
     print("Model Evaluation - \n")
     evals = evaluate_model(y_test, y_pred)
     for i in evals:
-        print(evals[i])
+        print(i, " : ", evals[i])
 
 if __name__ == "__main__":
     main()
