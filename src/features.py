@@ -2,27 +2,22 @@ import pandas as pd
 import numpy as np
 
 def create_lag_features(df):
-    df['lag1h'] = df['Global_active_power'].shift(60)
-    df['lag2h'] = df['Global_active_power'].shift(120)
-    df['lag3h'] = df['Global_active_power'].shift(180)
-    df['lag24h'] = df['Global_active_power'].shift(24*60)
-    df['lag7d'] = df['Global_active_power'].shift(24*60*7)
-
-    return df 
+    # daily lags
+    df['lag1d'] = df['Global_active_power'].shift(1)
+    df['lag2d'] = df['Global_active_power'].shift(2)
+    df['lag7d'] = df['Global_active_power'].shift(7)
+    return df
 
 def create_rolling_features(df):
-    df['rolling_mean_1h'] = df['Global_active_power'].rolling(window=60).mean()
-    df['rolling_mean_24h'] = df['Global_active_power'].rolling(window=1440).mean()
-    df['rolling_mean_7d'] = df['Global_active_power'].rolling(window=10080).mean()
-    df['rolling_std_1h'] = df['Global_active_power'].rolling(window=60).std()
-    df['rolling_min_1h'] = df['Global_active_power'].rolling(window=60).min()
-    df['rolling_max_1h'] = df['Global_active_power'].rolling(window=60).max()
-    df['rolling_std_24h'] = df['Global_active_power'].rolling(window=1440).std()
-    df['rolling_min_24h'] = df['Global_active_power'].rolling(window=1440).min()
-    df['rolling_max_24h'] = df['Global_active_power'].rolling(window=1440).max()
-    df['rolling_std_7d'] = df['Global_active_power'].rolling(window=10080).std()
-    df['rolling_min_7d'] = df['Global_active_power'].rolling(window=10080).min()
-    df['rolling_max_7d'] = df['Global_active_power'].rolling(window=10080).max()
+    # daily rolling windows
+    df['rolling_mean_7d'] = df['Global_active_power'].rolling(window=7).mean()
+    df['rolling_mean_30d'] = df['Global_active_power'].rolling(window=30).mean()
+
+    df['rolling_std_7d'] = df['Global_active_power'].rolling(window=7).std()
+    df['rolling_std_30d'] = df['Global_active_power'].rolling(window=30).std()
+
+    df['rolling_min_7d'] = df['Global_active_power'].rolling(window=7).min()
+    df['rolling_max_7d'] = df['Global_active_power'].rolling(window=7).max()
 
     return df  
 
