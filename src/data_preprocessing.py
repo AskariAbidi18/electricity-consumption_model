@@ -26,6 +26,15 @@ def interpolate(df):
     return df
 
 def resample_daily(df):
-    """ Convert minute-level to daily averages """
+    """ Convert minute-level to daily averages with continuous dates """
     df_daily = df.resample("D").mean()
+
+    # Ensure continuous daily index
+    full_range = pd.date_range(df_daily.index.min(), df_daily.index.max(), freq="D")
+    df_daily = df_daily.reindex(full_range)
+
+    # Interpolate missing values
+    df_daily = df_daily.interpolate(method="time", limit_direction="both")
+
+    df_daily.index.name = "datetime"
     return df_daily
