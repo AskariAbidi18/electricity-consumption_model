@@ -87,3 +87,4 @@ def forecast(user_input: UserInput):
 
     except Exception as e:
         return {"error": f"Exception occurred: {str(e)}"}
+    
