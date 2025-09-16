@@ -1,12 +1,26 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import os
 import pandas as pd
 import xgboost as xgb
-
 from src.features import create_lag_features, create_rolling_features
 
 app = FastAPI(title="Electricity Consumption Model")
+
+# Add CORS middleware to allow frontend to connect
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with specific domains
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount frontend static files (optional - serves frontend from the API)
+if os.path.exists("frontend"):
+    app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 
 # Load trained model
 model_path = "models/model_daily.json"
@@ -28,11 +42,15 @@ df_daily.index.name = "datetime"
 
 # Input schema
 class UserInput(BaseModel):
-    date: str   # e.g. "2025-09-01"
+    date: str  # e.g. "2025-09-01"
 
 @app.get("/")
 def home():
-    return {"message": "Welcome to Electricity Consumption Model"}
+    return {
+        "message": "Welcome to Electricity Consumption Model",
+        "status": "online",
+        "frontend_url": "/frontend/index.html"  # If serving frontend from API
+    }
 
 @app.post("/forecast")
 def forecast(user_input: UserInput):
@@ -42,7 +60,7 @@ def forecast(user_input: UserInput):
 
         if target_date <= last_date:
             return {"error": "Requested date is not in the future. Try a future date."}
-        
+
         df_future = df_daily.copy()
         current_date = last_date
 
@@ -82,9 +100,18 @@ def forecast(user_input: UserInput):
         forecast_value = float(df_future.loc[target_date, "Global_active_power"])
         return {
             "date": str(target_date.date()),
-            "forecast_avg_consumption": forecast_value
+            "forecast_avg_consumption": forecast_value,
+            "status": "success"
         }
 
     except Exception as e:
         return {"error": f"Exception occurred: {str(e)}"}
-    
+
+# Health check endpoint for frontend
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "service": "electricity-forecast-api"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
