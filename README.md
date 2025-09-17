@@ -101,7 +101,7 @@ After the API server is running:
 To switch branches:
 
 ```bash
-git checkout minute-model
+git checkout main
 ```
 
 ---
