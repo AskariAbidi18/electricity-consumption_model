@@ -23,3 +23,7 @@ python-dotenv
 # Optional (but very useful)
 jupyter
 notebook
+
+# Additional common dependencies
+pydantic
+requests
